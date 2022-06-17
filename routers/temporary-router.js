@@ -16,4 +16,9 @@ router.get('/testauth', checkAuth, (req, res) => {
     return res.status(200).send(`${req.user.username} you made it!`);
 });
 
+router.get('/reset', (req, res) => {
+    users.length = 0;
+    return res.status(200).send('successful reset');
+});
+
 export default router;
