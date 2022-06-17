@@ -1,7 +1,6 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
-
-import users from '../temp-db.js';
+import User from '../models/user-model.js';
 
 const checkAuth = (req, res, next) => {
     /*
@@ -24,13 +23,14 @@ const checkAuth = (req, res, next) => {
         }
 
         // add user information to the request
-        req.user = decoded;
-        const foundUser = users.find(user => user.username === decoded.username);
+        const dbUser = User.findOne({ username: decoded.username });
 
         // confirm the user in the token actually exists
-        if (foundUser === undefined) {
+        if (dbUser === null) {
             return res.status(404).send('user not found');
         }
+
+        req.user = decoded;
 
         next();
     });

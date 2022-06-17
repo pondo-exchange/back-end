@@ -1,14 +1,16 @@
 import express from 'express';
 import checkAuth from '../utils/check-auth.js';
+import User from '../models/user-model.js';
 
 const router = express.Router();
 
-// temporary get users router
-import users from '../temp-db.js';
-
 // GET USERS
 router.get('/users', (req, res) => {
-    return res.json(users);
+    User.find({}).then(docs => {
+        return res.status(200).json(docs);
+    }).catch(err => {
+        return res.sendStatus(500);
+    });
 });
 
 // TEST AUTHORIZATION
@@ -17,8 +19,11 @@ router.get('/testauth', checkAuth, (req, res) => {
 });
 
 router.get('/reset', (req, res) => {
-    users.length = 0;
-    return res.status(200).send('successful reset');
+    User.deleteMany({}).then(out => {
+        return res.status(200).send('successful reset');
+    }).catch(err => {
+        return res.status(500).send('unsuccessful resetting Users');
+    });
 });
 
 export default router;

@@ -19,7 +19,8 @@ const PORT = process.env.PORT || 8080;
 const DB_URL = process.env.DB_URL || "mongodb://localhost:27017/pondoexchange";
 
 const main = async () => {
-    // await mongoose.connect(DB_URL);
+    await mongoose.connect(DB_URL);
+
     // TODO: add https certs and redirect http to https
     httpServer.listen(PORT, () => console.log(`Listening on port ${PORT}..`));
 };
