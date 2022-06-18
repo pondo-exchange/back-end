@@ -1,6 +1,6 @@
 import express from 'express';
-import checkAuth from '../utils/check-auth.js';
-import User from '../models/user-model.js';
+import checkAuth from '#utils/check-auth.js';
+import User from '#models/user-model.js';
 
 const router = express.Router();
 

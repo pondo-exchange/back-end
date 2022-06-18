@@ -3,7 +3,7 @@ import cors from 'cors';
 import http from 'http';
 import express from 'express';
 import mongoose from 'mongoose';
-import mainRouter from './routers/main-router.js';
+import mainRouter from '#routers/main-router.js';
 
 // back-end server
 const app = express();

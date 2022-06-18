@@ -1,6 +1,6 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import User from '../models/user-model.js';
+import User from '#models/user-model.js';
 
 const checkAuth = (req, res, next) => {
     /*
