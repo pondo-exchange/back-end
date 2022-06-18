@@ -2,18 +2,11 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/user-model.js';
+import { hasUser, registerValidator } from '../utils/validators/user-validators.js';
 
 const router = express.Router();
 
-const hasUser = (req, res, next) => {
-    const {username, password} = req.body.user || {};
-    if (username === undefined || password === undefined) {
-        return res.status(400).send('invalid payload: no user supplied');
-    }
-    next();
-}
-
-router.post('/register', hasUser, async (req, res) => {
+router.post('/register', registerValidator, async (req, res) => {
     /*
 
     1. get the sent username and password
