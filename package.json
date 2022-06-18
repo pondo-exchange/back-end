@@ -23,6 +23,7 @@
     "#routers/*": "./routers/*",
     "#utils/*": "./utils/*",
     "#validators/*": "./utils/validators/*",
-    "#models/*": "./models/*"
+    "#models/*": "./models/*",
+    "#db/*": "./db/*"
   }
 }
