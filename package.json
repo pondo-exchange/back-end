@@ -17,5 +17,12 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.5"
   },
-  "type": "module"
+  "type": "module",
+  "imports": {
+    "#root/*": "./*",
+    "#routers/*": "./routers/*",
+    "#utils/*": "./utils/*",
+    "#validators/*": "./utils/validators/*",
+    "#models/*": "./models/*"
+  }
 }
