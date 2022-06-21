@@ -26,4 +26,43 @@ router.get('/reset', (req, res) => {
     });
 });
 
+
+/*
+
+TEMP TOURNAMENT ROUTES
+
+*/
+
+router.get('/tournament/:tournamentId/instruments', (req, res) => {
+    try {
+        const tournamentId = parseInt(req.params.tournamentId);
+        return res.json([1, 2]);
+    } catch {
+        return res.sendStatus(500);
+    }
+});
+
+router.get('/instrument/:instrumentId/view', checkAuth, (req, res) => {
+    return res.json({
+        bids: [{ price: 10, volume: 1 }, { price: 11, volume: 1 }],
+        asks: [{ price: 12, volume: 2 }, { price: 13, volume: 3 }],
+        userBids: [{price: 10, volume: 1}],
+        userAsks: [{price: 12, volume: 1}]
+    });
+});
+
+router.get('/instrument/:instrumentId/profit', checkAuth, (req, res) => {
+    return res.json(420);
+});
+
+router.get('/instrument/:instrumentId/position', checkAuth, (req, res) => {
+    return res.json(-3);
+});
+
+router.get('/instrument/:instrumentId/trades', checkAuth, (req, res) => {
+    return res.json([
+        { isBuy: true, price: 120, volume: 3 }
+    ]);
+});
+
 export default router;

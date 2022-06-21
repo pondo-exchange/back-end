@@ -21,9 +21,11 @@
   "imports": {
     "#root/*": "./*",
     "#routers/*": "./routers/*",
+    "#tournament-routers/*": "#routers/tournament-routers/*",
     "#utils/*": "./utils/*",
     "#validators/*": "./utils/validators/*",
     "#models/*": "./models/*",
-    "#db/*": "./db/*"
+    "#db/*": "./db/*",
+    "#tournament/*": "./tournament/*"
   }
 }
