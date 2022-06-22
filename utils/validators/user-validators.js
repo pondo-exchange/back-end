@@ -25,7 +25,7 @@ const userValidator = (req, res, next) => {
         return res.status(400).send(`username not between ${USERNAME_MIN_LENGTH} and ${USERNAME_MAX_LENGTH} characters`);
     }
 
-    if (!(PASSWORD_MIN_LENGTH <= n && n <= PASSWORD_MAX_LENGTH)) {
+    if (!(PASSWORD_MIN_LENGTH <= m && m <= PASSWORD_MAX_LENGTH)) {
         return res.status(400).send(`password not between ${PASSWORD_MIN_LENGTH} and ${PASSWORD_MAX_LENGTH} characters`);
     }
 
