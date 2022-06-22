@@ -18,6 +18,18 @@ router.get('/testauth', checkAuth, (req, res) => {
     return res.status(200).send(`${req.user.username} you made it!`);
 });
 
+router.get('/reset/:username', (req, res) => {
+    const username = req.params.username;
+    User.deleteOne({ username }).then(({ deletedCount }) => {
+        if (deletedCount === 0) {
+            return res.status(404).send(`user ${username} not found`);
+        }
+        return res.status(200).send('successful resetting user ' + username);
+    }).catch(err => {
+        return res.status(500).send('unsuccessful resetting user ' + username);
+    });
+});
+
 router.get('/reset', (req, res) => {
     User.deleteMany({}).then(out => {
         return res.status(200).send('successful reset');
@@ -25,6 +37,7 @@ router.get('/reset', (req, res) => {
         return res.status(500).send('unsuccessful resetting Users');
     });
 });
+
 
 
 /*
@@ -64,5 +77,6 @@ router.get('/instrument/:instrumentId/trades', checkAuth, (req, res) => {
         { isBuy: true, price: 120, volume: 3 }
     ]);
 });
+
 
 export default router;
