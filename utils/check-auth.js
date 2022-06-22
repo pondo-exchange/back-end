@@ -17,13 +17,13 @@ const checkAuth = (req, res, next) => {
         return res.status(401).send('authorization header not sent');
     }
 
-    jwt.verify(sentJWT, process.env.ACCESS_TOKEN_KEY, (err, decoded) => {
+    jwt.verify(sentJWT, process.env.ACCESS_TOKEN_KEY, async (err, decoded) => {
         if (err) {
             return res.status(403).send('invalid authentication');
         }
 
         // add user information to the request
-        const dbUser = User.findOne({ username: decoded.username });
+        const dbUser = await User.findOne({ username: decoded.username });
 
         // confirm the user in the token actually exists
         if (dbUser === null) {
