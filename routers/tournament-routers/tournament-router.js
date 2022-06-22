@@ -1,11 +1,8 @@
 import express from 'express';
-import specificRouter from './specific-tournament-router';
+import specificTournamentRouter from './tournament-id-router.js';
 
 const router = express.Router();
 
-// general tournament routing (with no ID)
-
-// specific tournament routing (with ID)
-router.use('/:tournamentId', specificRouter);
+router.use('/:tournamentId', specificTournamentRouter);
 
 export default router;
