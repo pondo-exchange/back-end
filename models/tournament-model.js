@@ -1,9 +1,14 @@
 import mongoose from 'mongoose';
 
 const TournamentSchema = new mongoose.Schema({
-    tournamentId: Number,
-    instruments: [ Number ],
-    registeredUsers: [ Schema.Types.ObjectId ],
+    instruments: {
+        type: [ Number ],
+        required: true,
+    },
+    registeredUsers: {
+        type: [{ type: mongoose.Schema.Types.ObjectId, required: true }],
+        required: true,
+    },
 });
 
 const Tournament = mongoose.model('Tournament', TournamentSchema);
