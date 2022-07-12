@@ -1,4 +1,2 @@
 const orderbookMap = new Map();
-
-
-export { tournamentMap };
+export { orderbookMap };

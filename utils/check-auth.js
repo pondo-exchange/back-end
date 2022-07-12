@@ -1,8 +1,9 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import User from '#models/user-model.js';
+import { User as UserType } from '#common/types.js';
 
-const checkAuth = (req, res, next) => {
+const checkAuth = async (req, res, next) => {
     /*
 
     1. 401 if user not logged in
@@ -27,10 +28,10 @@ const checkAuth = (req, res, next) => {
 
         // confirm the user in the token actually exists
         if (dbUser === null) {
-            return res.status(404).send('user not found');
+            return res.status(404).send('');
         }
 
-        req.user = decoded;
+        req.user = new UserType(dbUser._id, dbUser.username);
 
         next();
     });

@@ -15,6 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api', mainRouter);
 
 const httpServer = http.createServer(app);
+// const httpsServer = https.createServer(app, options);
+
 const PORT = process.env.PORT || 8080;
 const DB_URL = process.env.DB_URL || "mongodb://localhost:27017/pondoexchange";
 

@@ -2,7 +2,7 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '#models/user-model.js';
-import { hasUser, registerValidator } from '#validators/user-validators.js';
+import { validateBodyUser, registerValidator } from '#validators/user-validator.js';
 
 const router = express.Router();
 
@@ -40,7 +40,7 @@ router.post('/register', registerValidator, async (req, res) => {
     }
 });
 
-router.post('/login', hasUser, async (req, res) => {
+router.post('/login', validateBodyUser, async (req, res) => {
     /*
 
     1. get the stored user of sent username and password
@@ -69,7 +69,7 @@ router.post('/login', hasUser, async (req, res) => {
     }
 
     // the user is correct, so we can send a jwt with the user information
-    const outputUser = { username: 'jslew' };
+    const outputUser = { username: sentUser.username };
 
     return res.status(200).send(jwt.sign(outputUser, process.env.ACCESS_TOKEN_KEY));
 });

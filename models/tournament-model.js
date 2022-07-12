@@ -1,12 +1,13 @@
 import mongoose from 'mongoose';
 
 const TournamentSchema = new mongoose.Schema({
+    name: { type: String, required: true },
     instruments: {
-        type: [ Number ],
+        type: [ String ],
         required: true,
     },
-    registeredUsers: {
-        type: [{ type: mongoose.Schema.Types.ObjectId, required: true }],
+    userList: {
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
     },
 });
