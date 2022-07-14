@@ -4,6 +4,7 @@ import http from 'http';
 import express from 'express';
 import mongoose from 'mongoose';
 import mainRouter from '#routers/main-router.js';
+import fs from 'fs';
 
 // back-end server
 const app = express();
@@ -15,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api', mainRouter);
 
 const httpServer = http.createServer(app);
-// const httpsServer = https.createServer(app, options);
+
 
 const PORT = process.env.PORT || 8080;
 const DB_URL = process.env.DB_URL || "mongodb://localhost:27017/pondoexchange";
