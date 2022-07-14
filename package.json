@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node ./src/index.js"
   },
   "author": "jslew",
   "license": "ISC",
@@ -22,14 +22,14 @@
   },
   "type": "module",
   "imports": {
-    "#root/*": "./*",
-    "#routers/*": "./routers/*",
-    "#tournament-routers/*": "./routers/tournament-routers/*",
-    "#utils/*": "./utils/*",
-    "#validators/*": "./utils/validators/*",
-    "#models/*": "./models/*",
-    "#db/*": "./db/*",
-    "#tournament/*": "./tournament/*",
-    "#common/*": "./common/*"
+    "#root/*": "./src/*",
+    "#routers/*": "./src/routers/*",
+    "#tournament-routers/*": "./src/routers/tournament-routers/*",
+    "#utils/*": "./src/utils/*",
+    "#validators/*": "./src/utils/validators/*",
+    "#models/*": "./src/models/*",
+    "#db/*": "./src/db/*",
+    "#tournament/*": "./src/tournament/*",
+    "#common/*": "./src/common/*"
   }
 }
