@@ -1,11 +1,11 @@
 import express from 'express';
-import Instrument from '#models/instrument-model.js';
-import { validateBodyOrder } from '#validators/order-validator.js';
-import checkAuth from '#utils/check-auth.js';
-import { Order, OrderBook } from '#common/types.js';
-import { orderbookMap } from '#db/non-persistent.js';
-import UserList from '#models/user-list-model.js';
-import UserDetail from '#models/user-detail-model.js';
+import Instrument from '@models/instrument-model';
+import { validateBodyOrder } from '@validators/order-validator';
+import checkAuth from '@utils/check-auth';
+import { Order, OrderBook } from '@common/types';
+import { orderbookMap } from '@db/non-persistent';
+import UserList from '@models/user-list-model';
+import UserDetail from '@models/user-detail-model';
 
 const router = express.Router({ mergeParams: true });
 
@@ -59,7 +59,7 @@ router.use(checkAuth);
 router.use(checkUserRegistered);
 
 // make an order
-router.post('/order', validateBodyOrder, getOrderBook, (req, res) => {
+router.post('/order', validateBodyOrder, getOrderBook, (req: any, res) => {
     const { order: { isBuy, price, volume }, instrument } = req.body;
     const user = req.user;
 
@@ -69,21 +69,21 @@ router.post('/order', validateBodyOrder, getOrderBook, (req, res) => {
     return res.status(200).json(trades);
 });
 
-router.get('/view', getOrderBook, (req, res) => {
+router.get('/view', getOrderBook, (req: any, res) => {
     return res.json({ ...req.orderbook.getView(), ...req.orderbook.getUserView(req.user) })
 });
 
-router.get('/position', async (req, res) => {
+router.get('/position', async (req: any, res) => {
     const userDetails = await UserDetail.findOne({ userId: req.user._id, instrumentId: req.instrument._id })
     return res.json({ position: userDetails.position });
 });
 
-router.get('/balance', async (req, res) => {
+router.get('/balance', async (req: any, res) => {
     const userDetails = await UserDetail.findOne({ userId: req.user._id, instrumentId: req.instrument._id })
     return res.json({ balance: userDetails.balance });
 });
 
-router.get('/profit', getOrderBook, async (req, res) => {
+router.get('/profit', getOrderBook, async (req: any, res) => {
     const userDetails = await UserDetail.findOne({ userId: req.user._id, instrumentId: req.instrument._id })
     const { position, balance } = userDetails;
     const tradePrice = req.orderbook.getLastPrice();
@@ -91,9 +91,10 @@ router.get('/profit', getOrderBook, async (req, res) => {
     return res.json({ profit })
 });
 
-router.get('/user-details', getOrderBook, async (req, res) => {
+router.get('/user-details', getOrderBook, async (req: any, res) => {
     const userDetails = await UserDetail.findOne({ userId: req.user._id, instrumentId: req.instrument._id })
     const tradePrice = req.orderbook.getLastPrice();
+    const { position, balance } = userDetails;
     const profit = position !== 0 && tradePrice === null ? null : (balance + (position == 0 ? 0 : position * tradePrice));
     return res.json({ position: userDetails.position, balance: userDetails.balance, profit });
 });

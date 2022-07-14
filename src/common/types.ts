@@ -1,10 +1,20 @@
 import { Queue } from '@datastructures-js/queue';
-import { OrderedList } from './custom-ds.js';
-import EventEmitter from 'events';
+import { OrderedList } from './custom-ds';
+import { EventEmitter } from 'events';
+import mongoose, { ObjectId } from 'mongoose';
 
+const { ObjectId } = mongoose.Types;
+
+type UserPerms = {
+    admin?: boolean;
+}
 
 class User {
-    constructor(id, username, perms) {
+    _id: ObjectId;
+    username: string;
+    perms?: UserPerms;
+
+    constructor(id: ObjectId, username: string, perms: UserPerms = {}) {
         this._id = id; // _id for compatibility reasons
         this.username = username;
         this.perms = perms;
@@ -13,24 +23,23 @@ class User {
 
 
 class Order {
-    /**
-     * @param boolean isBuy
-     * @param number price
-     * @param number volume
-     * @param User user
-     */
-    constructor(isBuy, price, volume, user) {
+    isBuy: boolean;
+    price: number;
+    volume: number;
+    user: User;
+
+    constructor(isBuy: boolean, price: number, volume: number, user: User) {
         this.isBuy = isBuy;
         this.price = price;
         this.volume = volume;
         this.user = user;
     }
 
-    decVolume(volume) {
+    decVolume(volume: number) {
         this.volume -= volume;
     }
 
-    static trade(orderA, orderB) {
+    static trade(orderA: Order, orderB: Order) {
         const tradeVol = Math.min(orderA.volume, orderB.volume);
 
         orderA.decVolume(tradeVol);
@@ -42,13 +51,12 @@ class Order {
 
 
 class PriceLevelQueue {
-    /**
-     * @param number priceLevel
-     * @returns nothing
-     */
-    constructor(priceLevel) {
+    priceLevel: number;
+    queue: Queue<Order>;
+
+    constructor(priceLevel: number) {
         this.priceLevel = priceLevel;
-        this.queue = new Queue();
+        this.queue = new Queue<Order>();
     }
 
     front() {
@@ -67,31 +75,20 @@ class PriceLevelQueue {
         return this.queue.size();
     }
 
-    /**
-     * @param Order order
-     * @returns nothing
-     */
-    addOrder(order) {
+    addOrder(order: Order) {
         this.queue.enqueue(order);
     }
 
-    /**
-     * @param User user
-     * @returns nothing
-     */
-    removeFromUser(user) {
+    removeFromUser(user: User) {
         this.queue = Queue.fromArray(this.queue.toArray().filter(order => order.user._id !== user._id));
     }
 
-    filterUser(user) {
+    filterUser(user: User) {
         const newPLQ = new PriceLevelQueue(this.priceLevel);
         newPLQ.queue = Queue.fromArray(this.queue.toArray().filter(order => order.user._id.toString() === user._id.toString()));
         return newPLQ;
     }
 
-    /**
-     * @returns number
-     */
     getVolume() {
         return this.queue.toArray().reduce((prev, order) => prev + order.volume, 0);
     }
@@ -104,9 +101,11 @@ class PriceLevelQueue {
 
 class OrderBook extends EventEmitter {
     static TRADE = 'trade'; // on (buyer: User, seller: User, price, volume): void
-    /**
-     * @param string instrumentName
-     */
+    name: string;
+    bids: OrderedList<PriceLevelQueue>; // TODO: change to template
+    asks: OrderedList<PriceLevelQueue>;
+    lastPrice: number;
+
     constructor(name) {
         super();
 
@@ -123,10 +122,7 @@ class OrderBook extends EventEmitter {
     }
 
 
-    /**
-     * @param Order order
-     */
-    addOrder(order) {
+    addOrder(order: Order) {
         // trade while can trade
         const opposing = order.isBuy ? this.asks : this.bids;
         const isCrossing = order.isBuy ? (price => price <= order.price) : (price => order.price <= price);
@@ -174,7 +170,7 @@ class OrderBook extends EventEmitter {
         });
     }
 
-    getUserView(user) {
+    getUserView(user: User) {
         const userBids = this.bids.toArray().map(plq => plq.filterUser(user));
         const userAsks = this.asks.toArray().map(plq => plq.filterUser(user));
 

@@ -1,13 +1,13 @@
 import express from 'express';
-import Tournament from '#models/tournament-model.js';
-import UserList from '#models/user-list-model.js';
-import UserDetail from '#models/user-detail-model.js';
-import checkAuth from '#utils/check-auth.js';
-import Instrument from '#models/instrument-model.js';
+import Tournament from '@models/tournament-model';
+import UserList from '@models/user-list-model';
+import UserDetail from '@models/user-detail-model';
+import checkAuth from '@utils/check-auth';
+import Instrument from '@models/instrument-model';
 
 const router = express.Router({ mergeParams: true });
 
-const getTournament = (req, res, next) => {
+const getTournament = (req: any, res, next) => {
     Tournament.findOne({ name: req.params.tournamentName }).then(tournament => {
         if (tournament === null) return res.status(404).send('tournament not found');
         req.tournament = tournament;
@@ -19,11 +19,11 @@ const getTournament = (req, res, next) => {
 
 router.use(getTournament);
 
-router.get('/instruments', (req, res) => {
+router.get('/instruments', (req: any, res) => {
     return res.json(req.tournament.instruments);
 });
 
-router.get('/register-user', checkAuth, async (req, res) => {
+router.get('/register-user', checkAuth, async (req: any, res) => {
     const userList = await UserList.findById(req.tournament.userList);
 
     if (userList.users.includes(req.user._id)) {

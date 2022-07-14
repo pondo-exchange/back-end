@@ -1,7 +1,7 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import User from '#models/user-model.js';
-import { User as UserType } from '#common/types.js';
+import User from '@models/user-model';
+import { User as UserType } from '@common/types';
 
 const checkAuth = async (req, res, next) => {
     /*
@@ -31,7 +31,7 @@ const checkAuth = async (req, res, next) => {
             return res.status(404).send('');
         }
 
-        req.user = new UserType(dbUser._id, dbUser.username);
+        req.user = new UserType(dbUser._id, dbUser.username, {});
 
         next();
     });

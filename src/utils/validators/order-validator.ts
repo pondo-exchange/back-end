@@ -7,7 +7,7 @@ const orderSchema = joi.object({
 }).unknown(true).required();
 
 const validateBodyOrder = (req, res, next) => {
-    const { err } = orderSchema.validate(req.body.order);
+    const { error: err } = orderSchema.validate(req.body.order);
     if (err !== undefined) return res.status(400).send('invalid order payload');
     next();
 };

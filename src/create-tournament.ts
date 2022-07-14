@@ -2,9 +2,9 @@
  * TODO: MAKE INTO ENDPOINTS TO BE DONE ON ADMIN PANEL LATER
  */
 import mongoose from 'mongoose';
-import UserList from '#models/user-list-model.js';
-import Instrument from '#models/instrument-model.js';
-import Tournament from '#models/tournament-model.js';
+import UserList from '@models/user-list-model';
+import Instrument from '@models/instrument-model';
+import Tournament from '@models/tournament-model';
 
 const clearAll = async () => {
     await UserList.deleteMany({});
@@ -53,4 +53,4 @@ const main = async () => {
     mongoose.disconnect();
 };
 
-await main();
+main().catch(err => console.log(err));

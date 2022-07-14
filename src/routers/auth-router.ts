@@ -1,8 +1,8 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import User from '#models/user-model.js';
-import { validateBodyUser, registerValidator } from '#validators/user-validator.js';
+import User from '@models/user-model';
+import { validateBodyUser, registerValidator } from '@validators/user-validator';
 
 const router = express.Router();
 
@@ -31,7 +31,7 @@ router.post('/register', registerValidator, async (req, res) => {
         const hashedPassword = await bcrypt.hash(sentUser.password, 10);
 
         // store the created user
-        const newUser = User({ username: sentUser.username, hashedPassword });
+        const newUser = new User({ username: sentUser.username, hashedPassword });
         await newUser.save();
 
         return res.status(201).send('successfully created user');

@@ -1,13 +1,17 @@
-class OrderedList {
-    /**
-     * @param function<number(T, T)> comp
-     */
-    constructor(comp) {
+
+type Comparison<Type> = (a: Type, b: Type) => number;
+
+class OrderedList<Type> {
+
+    comp: Comparison<Type>;
+    arr: Array<Type>;
+
+    constructor(comp: Comparison<Type>) {
         this.comp = comp;
         this.arr = [];
     }
 
-    static fromArray(arr, comp) {
+    static fromArray<Type>(arr: Array<Type>, comp: Comparison<Type>) {
         let output = new OrderedList(comp);
         for (let x of arr) {
             output.push(x);
@@ -43,7 +47,7 @@ class OrderedList {
         this.arr.splice(k, 1);
     }
 
-    push(item) {
+    push(item: Type) {
         // find the last index that we should be inserted
         let ind = this.size();
 
@@ -57,12 +61,7 @@ class OrderedList {
         this.arr.splice(ind, 0, item);
     }
 
-    remove(comp) {
-        const ind = this.arr.findIndex(comp);
-        if (ind !== -1) this.arr.splice(ind, 1);
-    }
-
-    find(comp) {
+    find(comp: (x: Type) => boolean) {
         return this.arr.find(comp);
     }
 }

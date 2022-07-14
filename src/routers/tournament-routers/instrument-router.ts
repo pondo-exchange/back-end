@@ -1,5 +1,5 @@
 import express from 'express';
-import specificInstrumentRouter from './instrument-name-router.js';
+import specificInstrumentRouter from './instrument-name-router';
 
 const router = express.Router({ mergeParams: true });
 

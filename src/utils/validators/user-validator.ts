@@ -9,13 +9,13 @@ const registerSchema = userSchema.append({
 });
 
 const validateBodyUser = (req, res, next) => {
-    const { err } = userSchema.validate(req.body.user);
+    const { error: err } = userSchema.validate(req.body.user);
     if (err !== undefined) return res.status(400).send('invalid user payload');
     next();
 };
 
 const registerValidator = (req, res, next) => {
-    const { err } = registerSchema.validate(req.body.user);
+    const { error: err } = registerSchema.validate(req.body.user);
     if (err !== undefined) return res.status(400).send('invalid user payload');
     next();
 };

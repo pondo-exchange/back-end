@@ -1,7 +1,7 @@
 import express from 'express';
-import checkAuth from '#utils/check-auth.js';
-import User from '#models/user-model.js';
-import UserList from '#models/user-list-model.js';
+import checkAuth from '@utils/check-auth';
+import User from '@models/user-model';
+import UserList from '@models/user-list-model';
 
 const router = express.Router();
 
@@ -19,7 +19,7 @@ router.get('/user-lists', async (req, res) => {
 })
 
 // TEST AUTHORIZATION
-router.get('/testauth', checkAuth, (req, res) => {
+router.get('/testauth', checkAuth, (req: any, res) => {
     return res.status(200).send(`${req.user.username} you made it!`);
 });
 

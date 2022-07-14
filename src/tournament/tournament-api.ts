@@ -1,11 +1,11 @@
-import Instrument from '#models/instrument-model.js';
-import { orderbookMap } from '#db/non-persistent.js';
-import { Order } from '#common/types.js';
+import Instrument from '@models/instrument-model';
+import { orderbookMap } from '@db/non-persistent';
+import { Order } from '@common/types';
 
 const getInstrumentOrderbook = (instrument) => {
     const instrumentId = instrument.instrumentId.toString();
     // get orderbook
-    ifi (!orderbookMap.has(instrumentId))
+    if (!orderbookMap.has(instrumentId))
         orderbookMap.set(instrumentId, { bids: [], asks: [] });
 
     const orderbook = orderbookMap.get(instrumentId);
