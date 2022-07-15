@@ -1,4 +1,5 @@
 import joi from 'joi';
+import { RequestHandler } from 'express';
 
 const orderSchema = joi.object({
     isBuy: joi.bool().required(),
@@ -6,7 +7,7 @@ const orderSchema = joi.object({
     volume: joi.number().integer().positive().required()
 }).unknown(true).required();
 
-const validateBodyOrder = (req, res, next) => {
+const validateBodyOrder: RequestHandler = (req, res, next) => {
     const { error: err } = orderSchema.validate(req.body.order);
     if (err !== undefined) return res.status(400).send('invalid order payload');
     next();

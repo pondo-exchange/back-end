@@ -1,6 +1,11 @@
 import mongoose from 'mongoose';
 
-const InstrumentSchema = new mongoose.Schema({
+export interface IInstrument {
+    name: string;
+    userList: mongoose.Types.ObjectId;
+};
+
+const InstrumentSchema = new mongoose.Schema<IInstrument>({
     name: { type: String, required: true },
     userList: {
         type: mongoose.Schema.Types.ObjectId,
@@ -8,6 +13,6 @@ const InstrumentSchema = new mongoose.Schema({
     },
 });
 
-const Instrument = mongoose.model('Instrument', InstrumentSchema);
+const Instrument = mongoose.model<IInstrument>('Instrument', InstrumentSchema);
 
 export default Instrument;

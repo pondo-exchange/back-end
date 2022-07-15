@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import UserList from '@models/user-list-model';
 import Instrument from '@models/instrument-model';
 import Tournament from '@models/tournament-model';
+import { IUser } from './common/types';
 
 const clearAll = async () => {
     await UserList.deleteMany({});
@@ -18,20 +19,20 @@ const createUserList = async () => {
     return userListDoc;
 };
 
-const createInstrument = async (instrumentName, userList) => {
+const createInstrument = async (instrumentName: string, userListId: mongoose.Types.ObjectId) => {
     const instrument = new Instrument({
         name: instrumentName,
-        userList: userList._id,
+        userList: userListId,
     });
     const instrumentDoc = await instrument.save();
     return instrumentDoc;
 };
 
-const createTournament = async (tournamentName, instrumentNames) => {
+const createTournament = async (tournamentName: string, instrumentNames: Array<string>) => {
     const userListDoc = await createUserList();
     const instrumentDocs = [];
     for (let instrumentName of instrumentNames) {
-        instrumentDocs.push(await createInstrument(instrumentName, userListDoc));
+        instrumentDocs.push(await createInstrument(instrumentName, userListDoc._id));
     }
     const tournament = new Tournament({
         name: tournamentName,

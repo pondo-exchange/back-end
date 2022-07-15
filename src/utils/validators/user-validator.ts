@@ -1,3 +1,4 @@
+import { RequestHandler } from 'express';
 import joi from 'joi';
 
 const userSchema = joi.object({
@@ -8,16 +9,23 @@ const userSchema = joi.object({
 const registerSchema = userSchema.append({
 });
 
-const validateBodyUser = (req, res, next) => {
+const userTokenPayloadSchema = joi.object({
+    username: joi.string().alphanum().min(5).max(16).required()
+}).unknown(true).required();
+
+export const validateBodyUser: RequestHandler = (req, res, next) => {
     const { error: err } = userSchema.validate(req.body.user);
     if (err !== undefined) return res.status(400).send('invalid user payload');
     next();
 };
 
-const registerValidator = (req, res, next) => {
+export const validateUserTokenPayload = (payload: any) => {
+    const { error: err } = userTokenPayloadSchema.validate(payload);
+    return err !== undefined;
+};
+
+export const registerValidator: RequestHandler = (req, res, next) => {
     const { error: err } = registerSchema.validate(req.body.user);
     if (err !== undefined) return res.status(400).send('invalid user payload');
     next();
 };
-
-export { validateBodyUser, registerValidator };

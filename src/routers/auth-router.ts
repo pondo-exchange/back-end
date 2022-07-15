@@ -71,6 +71,7 @@ router.post('/login', validateBodyUser, async (req, res) => {
     // the user is correct, so we can send a jwt with the user information
     const outputUser = { username: sentUser.username };
 
+    // @ts-ignore
     return res.status(200).send(jwt.sign(outputUser, process.env.ACCESS_TOKEN_KEY));
 });
 

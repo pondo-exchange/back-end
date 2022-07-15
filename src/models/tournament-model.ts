@@ -1,6 +1,12 @@
 import mongoose from 'mongoose';
 
-const TournamentSchema = new mongoose.Schema({
+export interface ITournament {
+    name: string;
+    instruments: Array<string>;
+    userList: mongoose.Types.ObjectId;
+};
+
+const TournamentSchema = new mongoose.Schema<ITournament>({
     name: { type: String, required: true },
     instruments: {
         type: [ String ],
@@ -12,6 +18,6 @@ const TournamentSchema = new mongoose.Schema({
     },
 });
 
-const Tournament = mongoose.model('Tournament', TournamentSchema);
+const Tournament = mongoose.model<ITournament>('Tournament', TournamentSchema);
 
 export default Tournament;
