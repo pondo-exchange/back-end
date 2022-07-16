@@ -121,7 +121,8 @@ export class PriceLevelQueue {
 
 
 export class OrderBook extends EventEmitter {
-    static TRADE = 'trade'; // on (buyer: User, seller: User, price, volume): void
+    static TRADE = 'orderbookTrade'; // on (buyer: User, seller: User, price, volume): void
+    static UPDATE = 'orderbookUpdate';
     name: string;
     bids: OrderedList<PriceLevelQueue>; // TODO: change to template
     asks: OrderedList<PriceLevelQueue>;
@@ -181,6 +182,7 @@ export class OrderBook extends EventEmitter {
             plq!.addOrder(order);
         }
 
+        this.emit(OrderBook.UPDATE);
         return trades;
     }
 

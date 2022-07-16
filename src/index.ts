@@ -5,7 +5,7 @@ import http from 'http';
 import https from 'https';
 import express from 'express';
 import mongoose from 'mongoose';
-import mainRouter from '@routers/main-router';
+import mainRouter from './routers/main-router';
 import fs from 'fs';
 
 // back-end server

@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
 
+
 export interface IUser {
     username: string;
     hashedPassword: string;
-    perms: { admin?: boolean }
+    perms?: { admin?: boolean }
 };
 
 const UserSchema = new mongoose.Schema<IUser>({

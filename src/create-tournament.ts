@@ -2,15 +2,17 @@
  * TODO: MAKE INTO ENDPOINTS TO BE DONE ON ADMIN PANEL LATER
  */
 import mongoose from 'mongoose';
-import UserList from '@models/user-list-model';
-import Instrument from '@models/instrument-model';
-import Tournament from '@models/tournament-model';
+import UserList from './models/user-list-model';
+import Instrument from './models/instrument-model';
+import Tournament from './models/tournament-model';
+import UserDetail from './models/user-detail-model';
 import { IUser } from './common/types';
 
 const clearAll = async () => {
     await UserList.deleteMany({});
     await Instrument.deleteMany({});
     await Tournament.deleteMany({});
+    await UserDetail.deleteMany({}); 
 };
 
 const createUserList = async () => {

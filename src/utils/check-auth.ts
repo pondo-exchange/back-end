@@ -1,8 +1,8 @@
 import express, { RequestHandler, Request } from 'express';
 import jwt from 'jsonwebtoken';
-import User from '@models/user-model';
-import { validateUserTokenPayload } from './validators/user-validator';
-import { ExchangeRequest, IUser, IUserTokenPayload } from '@common/types';
+import User from '../models/user-model';
+import { userTokenPayloadSchema } from './validators/user-validator';
+import { ExchangeRequest, IUser, IUserTokenPayload } from '../common/types';
 
 const checkAuth: RequestHandler = async (req: ExchangeRequest, res, next) => {
     /*
@@ -22,11 +22,13 @@ const checkAuth: RequestHandler = async (req: ExchangeRequest, res, next) => {
     // @ts-ignore
     jwt.verify(sentJWT, process.env.ACCESS_TOKEN_KEY, async (err, decoded) => {
         if (err) {
-            return res.status(403).send('invalid authentication');
+            const error = new Error('invalid authentication');
+            return next({ status: 403, error });
         }
 
-        if (!validateUserTokenPayload(decoded)) {
-            return res.status(400).send('invalid authentication token payload');
+        const validation = userTokenPayloadSchema.validate(decoded);
+        if (validation.error !== undefined) {
+            next({ status: 400, error: validation.error })
         }
 
         // add user information to the request

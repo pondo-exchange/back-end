@@ -8,7 +8,7 @@ export interface IUserPerms {
 export interface IUser {
     id: string;
     username: string;
-    perms: IUserPerms;
+    perms?: IUserPerms;
 };
 
 export interface IUserTokenPayload {

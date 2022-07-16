@@ -1,7 +1,7 @@
 import express from 'express';
-import checkAuth from '@utils/check-auth';
-import User from '@models/user-model';
-import UserList from '@models/user-list-model';
+import checkAuth from '../utils/check-auth';
+import User from '../models/user-model';
+import UserList from '../models/user-list-model';
 
 const router = express.Router();
 
@@ -42,42 +42,6 @@ router.get('/reset', (req, res) => {
         return res.status(500).send('unsuccessful resetting Users');
     });
 });
-
-
-
-/*
-
-TEMP TOURNAMENT ROUTES
-
-
-router.get('/tournament/name/:tournamentName/instruments', (req, res) => {
-    return res.json(['1', '2']);
-});
-
-router.get('/instrument/name/:instrumentName/view', checkAuth, (req, res) => {
-    return res.json({
-        bids: [{ price: 10, volume: 1 }, { price: 11, volume: 1 }],
-        asks: [{ price: 12, volume: 2 }, { price: 13, volume: 3 }],
-        userBids: [{price: 10, volume: 1}],
-        userAsks: [{price: 12, volume: 1}]
-    });
-});
-
-router.get('/instrument/name/:instrumentName/profit', checkAuth, (req, res) => {
-    return res.json(420);
-});
-
-router.get('/instrument/name/:instrumentName/position', checkAuth, (req, res) => {
-    return res.json(-3);
-});
-
-router.get('/instrument/name/:instrumentName/trades', checkAuth, (req, res) => {
-    return res.json([
-        { isBuy: true, price: 120, volume: 3 }
-    ]);
-});
-
-/**/
 
 
 export default router;

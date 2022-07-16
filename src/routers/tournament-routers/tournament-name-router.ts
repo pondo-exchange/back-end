@@ -1,11 +1,11 @@
 import mongoose from 'mongoose';
 import express, { RequestHandler } from 'express';
-import Tournament from '@models/tournament-model';
-import UserList from '@models/user-list-model';
-import UserDetail from '@models/user-detail-model';
-import checkAuth from '@utils/check-auth';
-import Instrument from '@models/instrument-model';
-import { ExchangeRequest } from '@common/types';
+import Tournament from '../../models/tournament-model';
+import UserList from '../../models/user-list-model';
+import UserDetail from '../../models/user-detail-model';
+import checkAuth from '../../utils/check-auth';
+import Instrument from '../../models/instrument-model';
+import { ExchangeRequest } from '../../common/types';
 
 const router = express.Router({ mergeParams: true });
 
@@ -14,9 +14,7 @@ const getTournament: RequestHandler = (req: ExchangeRequest, res, next) => {
         if (tournament === null) return res.status(404).send('tournament not found');
         req.tournament = tournament;
         next();
-    }).catch(err => {
-        return res.sendStatus(500);
-    });
+    }).catch(error => next({ error }));
 };
 
 router.use(getTournament);
@@ -25,13 +23,14 @@ router.get('/instruments', (req: ExchangeRequest, res) => {
     return res.json(req.tournament.instruments);
 });
 
-router.get('/register-user', checkAuth, async (req: ExchangeRequest, res) => {
+router.get('/register-user', checkAuth, async (req: ExchangeRequest, res, next) => {
     const userList = await UserList.findById(req.tournament.userList);
 
     if (userList === null) return res.sendStatus(500);
 
     if (userList.users.includes(new mongoose.Types.ObjectId(req.user!.id))) {
-        return res.status(400).json({ error: 'already registered' });
+        const error = new Error('already registered');
+        return next({ status: 400, error })
     }
 
     userList.users.push(new mongoose.Types.ObjectId(req.user!.id));

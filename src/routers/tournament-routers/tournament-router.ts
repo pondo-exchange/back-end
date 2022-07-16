@@ -1,6 +1,6 @@
 import express from 'express';
 import specificTournamentRouter from './tournament-name-router';
-import Tournament from '@models/tournament-model';
+import Tournament from '../../models/tournament-model';
 
 const router = express.Router({ mergeParams: true });
 

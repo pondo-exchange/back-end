@@ -1,16 +1,16 @@
 import joi from 'joi';
 import { RequestHandler } from 'express';
 
-const orderSchema = joi.object({
+export const orderSchema = joi.object({
     isBuy: joi.bool().required(),
     price: joi.number().integer().positive().required(),
     volume: joi.number().integer().positive().required()
 }).unknown(true).required();
 
-const validateBodyOrder: RequestHandler = (req, res, next) => {
+export const validateBodyOrder: RequestHandler = (req, res, next) => {
     const { error: err } = orderSchema.validate(req.body.order);
-    if (err !== undefined) return res.status(400).send('invalid order payload');
+    if (err !== undefined) {
+        next({ status: 400, error: err })
+    };
     next();
 };
-
-export { validateBodyOrder };

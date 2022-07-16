@@ -1,31 +1,38 @@
 import { RequestHandler } from 'express';
 import joi from 'joi';
 
-const userSchema = joi.object({
+export const userSchema = joi.object({
     username: joi.string().alphanum().min(5).max(16).required(),
-    hashedPassword: joi.string().min(8).max(32).required(),
+    password: joi.string().min(8).max(32).required(),
+    perms: joi.object({ admin: joi.boolean() }),
 }).unknown(true).required();
 
-const registerSchema = userSchema.append({
+export const registerSchema = userSchema.append({
 });
 
-const userTokenPayloadSchema = joi.object({
+export const userTokenPayloadSchema = joi.object({
     username: joi.string().alphanum().min(5).max(16).required()
 }).unknown(true).required();
 
 export const validateBodyUser: RequestHandler = (req, res, next) => {
     const { error: err } = userSchema.validate(req.body.user);
-    if (err !== undefined) return res.status(400).send('invalid user payload');
+    if (err !== undefined) {
+        return next({ status: 400, error: err });
+    }
     next();
 };
 
-export const validateUserTokenPayload = (payload: any) => {
+export const isUserTokenPayload = (payload: any) => {
     const { error: err } = userTokenPayloadSchema.validate(payload);
+
     return err !== undefined;
 };
 
 export const registerValidator: RequestHandler = (req, res, next) => {
     const { error: err } = registerSchema.validate(req.body.user);
-    if (err !== undefined) return res.status(400).send('invalid user payload');
+
+    if (err !== undefined)
+        return next({ status: 400, error: err });
+
     next();
 };
