@@ -13,16 +13,16 @@ import { readFileSync as read } from 'fs';
 // back-end server
 const app = express();
 
+app.enable('trust proxy');
+app.use(forwardHTTPS);
 app.use(cors({ origin: process.env.CORS_ORIGIN }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
 app.use('/api', mainRouter);
 
-const httpApp = express();
-httpApp.get('*', forwardHTTPS);
-
-const httpServer = http.createServer();
+const httpServer = http.createServer(app);
 const httpsServer = https.createServer({
     key: read(path.join(__dirname, 'keys/privkey.pem')),
     cert: read(path.join(__dirname, 'keys/fullchain.pem'))
@@ -37,7 +37,6 @@ const DB_URL = process.env.DB_URL || "mongodb://localhost:27017/pondoexchange";
 const main = async () => {
     await mongoose.connect(DB_URL);
 
-    // TODO: add https certs and redirect http to https
     if (process.env.ALLOW_HTTP)
         httpServer.listen(PORT, () => console.log(`http server running on port ${PORT}`));
     httpsServer.listen(SECURE_PORT, () => console.log(`https server running on port ${SECURE_PORT}`));
