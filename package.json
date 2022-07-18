@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
+    "forever": "forever start ./dist/index.js",
     "ct": "ts-node ./src/create-tournament.ts",
     "dev": "ts-node-dev --respawn ./src/index.ts",
     "start": "ts-node ./src/index.ts",
-    "build": "tsc"
+    "build": "tsc && rm -rf dist/keys && ln -s ../../keys"
   },
   "author": "jslew",
   "license": "ISC",
