@@ -1,21 +1,26 @@
 import express from 'express';
 import checkAuth from '../utils/check-auth';
 import User from '../models/user-model';
+import { IUser } from '../common/types';
 import UserList from '../models/user-list-model';
 
 const router = express.Router();
 
 // GET USERS
 router.get('/users', (req, res) => {
-    User.find({}).then(docs => {
-        return res.status(200).json(docs);
+    User.find({}).then(userDocs => {
+        return userDocs.map(user => user.username)
+    }).then(usernames => {
+        return res.status(200).json(usernames);
     }).catch(err => {
         return res.sendStatus(500);
     });
 });
 
 router.get('/user-lists', async (req, res) => {
-    return res.json(await UserList.find({}));
+    return res.json(
+        (await UserList.find({})).map(userList => userList.users)
+    );
 })
 
 // TEST AUTHORIZATION
